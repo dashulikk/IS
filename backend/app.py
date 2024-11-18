@@ -88,7 +88,7 @@ async def login(user: UserLogin):
         raise HTTPException(status_code=403, detail=f"Exception: {e}")
 
 
-@app.get("/get_balance", status_code=200)
+@app.post("/get_balance", status_code=200)
 async def get_balance(token: str = Depends(oauth2_scheme)):
     username: str = get_current_user(token)
     if username is None:
@@ -113,7 +113,7 @@ async def topup(topup_request: TopUpRequest, token: str = Depends(oauth2_scheme)
         raise HTTPException(status_code=403, detail=f"Exception: {e}")
 
 
-@app.get("/get_stock_price", status_code=200)
+@app.post("/get_stock_price", status_code=200)
 async def get_stock_price(stock_request: StockPriceRequest):
     try:
         return {"stock_price": Service.stock_price(stock_request.stock)}
@@ -147,7 +147,7 @@ async def sell_stock(sell_stock_request: SellStockRequest, token: str = Depends(
         raise HTTPException(status_code=403, detail=f"Exception: {e}")
 
 
-@app.get("/get_portfolio", status_code=200)
+@app.post("/get_portfolio", status_code=200)
 async def get_portfolio(token: str = Depends(oauth2_scheme)):
     username: str = get_current_user(token)
     if username is None:
