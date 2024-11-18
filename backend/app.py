@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 
 from data_models import UserCreate, UserLogin, BuyStockRequest, SellStockRequest, TopUpRequest, StockPriceRequest
@@ -13,6 +14,16 @@ from service import Service
 load_dotenv()
 
 app = FastAPI()
+
+# allow CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 db = Database()
 service = Service(db)
 
