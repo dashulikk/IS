@@ -1,0 +1,16 @@
+### users_stocks ###
+username VARCHAR(255) NOT NULL,
+stock VARCHAR(255) NOT NULL,
+amount FLOAT
+
+### users_balance ###
+username VARCHAR(255) NOT NULL PRIMARY KEY,
+balance FLOAT
+
+### users ###
+username VARCHAR(255) NOT NULL PRIMARY KEY,
+password_hash VARCHAR(255) NOT NULL,
+salt VARCHAR(255) NOT NULL
+
+### Constraints ###
+balance >= 0, amount >= 0
