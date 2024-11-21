@@ -34,11 +34,6 @@ function Signup() {
       });
     } else {
       createUser(username, password);
-      notifications.show({
-          title: 'User successfully created!',
-          message: 'Please proceed to sign in',
-          color: 'green'
-      });
     }
   };
 

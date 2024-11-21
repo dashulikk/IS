@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import StockTransaction from './StockTransaction';
+import {notifications} from "@mantine/notifications";
 
 function Home() {
     const navigate = useNavigate();
@@ -16,7 +17,13 @@ function Home() {
       getBalance(token)
           .then(response => response.json())
           .then(data => setBalance(parseFloat(data.balance).toFixed(2)))
-          .catch(error => console.error("Error fetching balance:", error));
+          .catch((error) => {
+                      console.error("Error fetching balance:", error)
+                      notifications.show({
+                          title: 'Error fetching balance',
+                          color: 'red'
+                      });
+          });
     }
   
     useEffect(() => {
@@ -61,7 +68,13 @@ function Home() {
           setPortfolioStocks(porfolio_array);
         }
         )
-        .catch(error => console.error("Error fetching portfolio:", error));
+          .catch((error) => {
+                     console.error("Error fetching portfolio:", error);
+                      notifications.show({
+                          title: 'Error fetching portfolio',
+                          color: 'red'
+                      });
+          });
     }, [portfolioStocks]);
 
 
@@ -183,7 +196,7 @@ function Home() {
                   getStockPrice(searchStr)
                   .then((response) => response.json())
                   .then(({stock_price}) => {
-                    if (stock_price) {
+                    if (stock_price !== undefined && stock_price != null) {
                       setSearchStocks([
                         {
                           stock: searchStr,
@@ -205,9 +218,17 @@ function Home() {
                           </Table.Tr>
                         )
                       ));
+                    } else {
+                        throw Error("Cannot fetch stock details");
                     }
                   })
-                  .catch((error) => console.error("Error fetching stock price:", error));
+                  .catch((error) => {
+                      console.error("Error fetching stock details:", error);
+                      notifications.show({
+                          title: 'Error fetching stock details',
+                          color: 'red'
+                      })
+                  });
                 }
                 }>
                   Search

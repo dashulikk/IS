@@ -1,3 +1,5 @@
+import {notifications} from "@mantine/notifications";
+
 const host = "http://13.60.236.147:5000";
 
 const getStockPrice = (stock_name) => {
@@ -23,9 +25,28 @@ const createUser = (username, password) => {
             password: `${password}`
         })
     })
-    .then((response) => response.json())
-    .then((data) => data)
-    .catch((error) => console.error("Error creating a user:", error));
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Response not ok");
+        } else {
+            response.json();
+        }
+    })
+    .then((data) => {
+        notifications.show({
+          title: 'User successfully created!',
+          message: 'Please proceed to sign in',
+          color: 'green'
+      });
+        return data;
+    } )
+        .catch((error) => {
+                      console.error("Error creating a user:", error);
+                      notifications.show({
+                          title: 'Error creating a user',
+                          color: 'red'
+                      });
+        });
 }
 
 const loginUser = (username, password) => {

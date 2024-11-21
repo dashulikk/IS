@@ -2,6 +2,7 @@ import { Text, Anchor,Container, Title, Paper, TextInput, PasswordInput, Button,
 import { useState } from 'react';
 import { loginUser } from './brokerRequests';
 import { useNavigate } from 'react-router-dom';
+import {notifications} from "@mantine/notifications";
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -22,11 +23,27 @@ function Login() {
     loginUser(username, password)
         .then((response) => response.json())
         .then(({access_token}) => {
-            localStorage.setItem('token', access_token);
-            localStorage.setItem('username', username);
-            navigate("/");
+            if (access_token === undefined || access_token === null) {
+                console.error("Error login:", "Wrong Credentials");
+                      notifications.show({
+                          title: 'Error login',
+                          message: 'Wrong credentials',
+                          color: 'red'
+                      });
+            } else {
+                localStorage.setItem('token', access_token);
+                localStorage.setItem('username', username);
+                navigate("/");
+            }
         })
-        .catch((error) => console.error("Error login:", error));;
+        .catch((error) => {
+                      console.error("Error login:", error);
+                      notifications.show({
+                          title: 'Error login',
+                          message: 'Wrong credentials',
+                          color: 'red'
+                      });
+        });
   };
 
 
