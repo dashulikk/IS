@@ -140,10 +140,18 @@ function Home() {
               />
               <Center>
               <Button onClick={() => {
-                topUp(token, parseFloat(topUpValue)).then(refreshBalance()).then(() => {
-                  refreshBalance();
-                  topUpClose();
-                });
+                  if (isNaN(parseFloat(topUpValue))) {
+                      notifications.show({
+                          title: 'Error updating user balance',
+                          message: 'Wrong amount',
+                          color: 'red'
+                      });
+                  } else {
+                      topUp(token, parseFloat(topUpValue)).then(refreshBalance()).then(() => {
+                      refreshBalance();
+                      topUpClose();
+                    });
+                  }
               }}>
                 Top Up
               </Button>
