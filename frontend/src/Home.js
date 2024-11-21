@@ -68,13 +68,6 @@ function Home() {
           setPortfolioStocks(porfolio_array);
         }
         )
-          .catch((error) => {
-                     console.error("Error fetching portfolio:", error);
-                      notifications.show({
-                          title: 'Error fetching portfolio',
-                          color: 'red'
-                      });
-          });
     }, [portfolioStocks]);
 
 
