@@ -67,7 +67,7 @@ function Home() {
           }
           setPortfolioStocks(porfolio_array);
         }
-        )
+        ).catch(error => console.error("Portfolio not found:", error));
     }, [portfolioStocks]);
 
 
