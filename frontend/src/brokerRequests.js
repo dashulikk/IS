@@ -1,4 +1,4 @@
-const host = "http://13.60.199.126:5000";
+const host = "http://13.60.236.147:5000";
 
 const getStockPrice = (stock_name) => {
     return fetch(`${host}/get_stock_price`, {

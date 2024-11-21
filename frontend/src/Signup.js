@@ -2,10 +2,12 @@ import { Text, Anchor,Container, Title, Paper, TextInput, PasswordInput, Button,
 import { createUser } from './brokerRequests';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { notifications } from '@mantine/notifications';
 
 function Signup() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const navigate = useNavigate();
 
@@ -18,9 +20,26 @@ function Signup() {
     setPassword(event.target.value);
   };
 
+  const handlePasswordConfirmChange = (event) => {
+    setPasswordConfirm(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    createUser(username, password);
+    if (password !== passwordConfirm) {
+      notifications.show({
+          title: 'Passwords do not match',
+          message: 'Please make sure your passwords match!',
+          color: 'red'
+      });
+    } else {
+      createUser(username, password);
+      notifications.show({
+          title: 'User successfully created!',
+          message: 'Please proceed to sign in',
+          color: 'green'
+      });
+    }
   };
 
 
@@ -59,13 +78,14 @@ function Signup() {
             onChange={handlePasswordChange}
           />
 
-          {/* Password field */}
+          {/* Confirm Password field */}
           <PasswordInput 
             label="Confirm Password" 
             placeholder="Confirm your password" 
             required 
             size="md" 
             style={{ marginBottom: 20 }}
+            onChange={handlePasswordConfirmChange}
           />
           
           {/* Login button */}
